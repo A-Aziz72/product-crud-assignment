@@ -1,10 +1,12 @@
 package com.example.product_crud_assignment;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Product {
     private String id;
     private String name;

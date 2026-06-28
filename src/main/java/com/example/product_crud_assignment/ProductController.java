@@ -1,66 +1,48 @@
 package com.example.product_crud_assignment;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 
-    private List<Product> products = new ArrayList<>();
+    private final ProductService productService;
 
-    private int getProductIndex(String id) {
-        for (Product product : products) {
-            if (product.getId().equals(id)) {
-                return products.indexOf(product);
-            }
-        }
-        return -1;
+    // TODO: Use @Autowired to inject the ProductService via constructor
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
+    // Create
     @PostMapping
     public Product createProduct(@RequestBody Product product) {
-        products.add(product);
-        return product;
+        return productService.createProduct(product);
     }
 
+    // Read all
     @GetMapping
     public List<Product> getAllProducts() {
-        return products;
+        return productService.getAllProducts();
     }
 
+    // Read by ID
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable String id) {
-        for (Product product : products) {
-            if (product.getId().equals(id)) {
-                return product;
-            }
-        }
-        return null;
+        return productService.getProductById(id);
     }
 
+    // Update
     @PutMapping("/{id}")
     public Product updateProduct(@PathVariable String id, @RequestBody Product updatedProduct) {
-
-        int index = getProductIndex(id);
-
-        if (index != -1) {
-            products.set(index, updatedProduct);
-            return updatedProduct;
-        }
-
-        return null;
+        return productService.updateProduct(id, updatedProduct);
     }
 
+    // Delete
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable String id) {
-
-        int index = getProductIndex(id);
-
-        if (index != -1) {
-            products.remove(index);
-        }
+        productService.deleteProduct(id);
     }
 }
